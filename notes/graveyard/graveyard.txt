@@ -1,0 +1,11 @@
+/*if piss_spd_boost >= piss_spd_boost_max {
+			var r = 25;
+		} else r = 1;
+		repeat(r) {*/
+
+/*else if haxisr != 0 or vaxisr != 0 {
+		if piss_spd_boost < piss_spd_boost_max
+			piss_spd_boost += piss_boost_charge_rate;
+	} else {
+		piss_spd_boost = 0;
+	}*/
