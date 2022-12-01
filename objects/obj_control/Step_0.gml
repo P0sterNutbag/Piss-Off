@@ -1,5 +1,5 @@
-if keyboard_check_pressed(ord("R"))  game_restart();
-if keyboard_check_pressed(vk_escape)  game_end();
+//if keyboard_check_pressed(ord("R"))  game_restart();
+//if keyboard_check_pressed(vk_escape)  game_end();
 
 var col = make_color_hsv(hue,175,255);
 var back = layer_background_get_id("Background");
@@ -13,7 +13,9 @@ var back = layer_background_get_id("Background");
 
 //hue += 0.1;
 // sort list
-ds_list_sort(global.players_list,true);
+/*if ds_list_size(global.players_list) > 1 {
+	//ds_list_sort(global.players_list,true);
+}*/
 
 // slow mo for victory
 var n=0;

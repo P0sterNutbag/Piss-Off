@@ -1,5 +1,5 @@
 #region // controls
-if gamepad_is_connected(my_device) {
+//if gamepad_is_connected(my_device) {
 	//var key_jump = gamepad_button_check_pressed(my_device,gp_face1);
 	var key_jump_down = gamepad_button_check(my_device,gp_face1);
 	var key_piss = gamepad_button_check(my_device,gp_shoulderrb);
@@ -11,11 +11,12 @@ if gamepad_is_connected(my_device) {
 	gamepad_set_axis_deadzone(my_device, 0.25);
 	haxis = gamepad_axis_value(my_device, gp_axislh);
 	vaxis = gamepad_axis_value(my_device,gp_axislv);
-	var key_jump = -vaxis //or gamepad_button_check_pressed(my_device,gp_face1);
+	var key_jump = -vaxis or gamepad_button_check_pressed(my_device,gp_shoulderl);
 	var key_jump_down = -vaxis;
 	var key_down = vaxis;
 	if abs(haxis) > ra_deadzone  var hdir = sign(haxis);
 	else hdir = 0;
+	//hdir = haxis;
 	var key_block = vaxis;
 	haxisr = gamepad_axis_value(my_device, gp_axisrh);
 	vaxisr = gamepad_axis_value(my_device,gp_axisrv);
@@ -30,8 +31,8 @@ if gamepad_is_connected(my_device) {
 	var key_duck = vaxis;
 	var key_up = -vaxis;
 	var key_right = haxis;
-} else {
-	if object_index == obj_player1 {
+//} else {
+/*	if object_index == obj_player1 {
 		var key_right = keyboard_check(ord("D"));
 		var key_left = keyboard_check(ord("A"));
 		var key_up = keyboard_check(ord("W"));
@@ -139,9 +140,16 @@ if gamepad_is_connected(my_device) {
 	}
 	if key_roll_left_release {
 		can_roll_left_timer = can_roll_timer_max;
+	}*/
+//}
+#endregion
+
+// open pause menu
+if gamepad_button_check_pressed(my_device,gp_start) {
+	with instance_create_layer(x,y,"control",obj_pause_menu) {
+		my_device = other.my_device;
 	}
 }
-#endregion
 
 //var on_ground = tile_meeting(x,y+1,"solid") or (collision_rectangle(bbox_left,bbox_bottom,bbox_right,bbox_bottom+1,obj_platform,false,false) and vsp >= 0) or collision_line(x,y,x,y+2,obj_slope,false,false);
 var on_wall = tile_meeting(x+image_xscale,y,"solid") and abs(haxis) > ra_deadzone;
@@ -151,7 +159,6 @@ var on_stain = stain and stain.visible;
 switch(state) {
 #region // WALK STATE //
 case states.walk:
-	if keyboard_check(vk_space)  room_goto(rm_afterbattle);
 	visible = true;
 	// movement
 	if on_ground {
@@ -222,22 +229,12 @@ case states.walk:
 		}
 		draw_arc = false;
 		charge_timer = 0;
-	} else if ((haxisr != 0 or vaxisr != 0) or (keyboard_check(vk_space))) and can_autofire {
+	} else if (haxisr != 0 or vaxisr != 0) and can_autofire {
 		draw_arc = true;
 		if my_weapon = noone  charge_timer++;
 	} else {
 		draw_arc = false
 		charge_timer = 0;
-	}
-	// ammo
-	if !key_piss {
-		if ammo_refill_timer <= 0 {
-			if ammo < ammo_max  ammo+=1;
-		} else  ammo_refill_timer--;
-	}
-	if ammo < 0 {
-		ammo_refill_timer = ammo_refill_timer_max*1.5;
-		ammo = 0;
 	}
 	
 	// autofire
@@ -251,7 +248,7 @@ case states.walk:
 	if can_roll_right_timer > 0  can_roll_right_timer--;
 	if can_roll_left_timer > 0  can_roll_left_timer--;
 	if on_ground or on_wall airdashes = airdashes_max;
-	if (((gamepad_is_connected(my_device) and key_roll) or (!gamepad_is_connected(my_device) and (key_left and can_roll_left_timer > 0) or (key_right and can_roll_right_timer > 0))) and (on_ground or airdashes > 0)) {
+	if key_roll {
 		if !on_ground  airdashes--;
 		state = states.roll;
 		vsp = 0;
@@ -530,14 +527,14 @@ if hp > 0 and state != states.dead {
 					flash = true; alarm[3] = 3;
 				}
 				if hp <= 0 {
-					scr_create_partical(spr_death_blast);
+					/*scr_create_partical(spr_death_blast);
 					if room != rm_join and room != rm_afterbattle {
 						with par_player {
 							if my_piss == piss.object_index {
 								global.player_kills[? object_index]++;
 							}
 						}
-					}
+					}*/
 				}
 				with piss  instance_destroy();
 			}
@@ -566,6 +563,15 @@ if hp <= 0 and state != states.die {
 	vsp = lengthdir_y(explode_spd,hurt_dir);
 	bounces = 3;
 	hp = hp_max;
+	
+	scr_create_partical(spr_death_blast);
+	if room != rm_join and room != rm_afterbattle {
+		with par_player {
+			if my_piss == piss.object_index {
+				global.player_kills[? object_index]++;
+			}
+		}
+	}
 }
 
 // boosts 
@@ -585,4 +591,15 @@ if boost {
 		boosted = true;
 		max_spd = hsp;
 	}
+}
+
+// ammo
+if !key_piss {
+	if ammo_refill_timer <= 0 {
+		if ammo < ammo_max  ammo+=1;
+	} else  ammo_refill_timer--;
+}
+if ammo < 0 {
+	ammo_refill_timer = ammo_refill_timer_max*1.5;
+	ammo = 0;
 }

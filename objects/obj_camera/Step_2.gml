@@ -6,10 +6,10 @@ if global.game_over and game_get_speed(gamespeed_fps) > 30 and instance_exists(g
 	
 	var xx = global.winner.x;
 	xx -= width/2;
-	xx = clamp(xx,0,base_width-width);
+	//xx = clamp(xx,0,base_width-width);
 	var yy = global.winner.y;
 	yy -= height/2;
-	yy = clamp(yy,0,base_height-height);
+	//yy = clamp(yy,0,base_height-height);
 
 	xpos = lerp(xpos,xx,1);
 	ypos = lerp(ypos,yy,1);

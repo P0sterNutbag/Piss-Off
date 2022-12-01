@@ -15,11 +15,11 @@ if flash {
 
 // ammo
 if ammo < ammo_max {
-	var p = (ammo/ammo_max)*sprite_get_number(spr_pissmeter);
+	var p = (ammo/ammo_max)*100;//*sprite_get_number(spr_pissmeter);
 	if canshoot  var c = c_yellow;
 	else  c = c_white;
-	draw_sprite(spr_pissmeter,p,x,y-23);
-	//draw_healthbar(x+5,y-24,x-6,y-23,p,c_black,c,c,1,true,false);
+	//draw_sprite(spr_pissmeter,p,x,y-23);
+	draw_healthbar(x+5,y-24,x-6,y-23,p,c_black,c,c,1,true,false);
 }
 var charge = (charge_timer/charge_timer_max)*100;
 draw_healthbar(x+5,y-22,x-6,y-22,charge,c_white,c_white,c_white,1,false,false);

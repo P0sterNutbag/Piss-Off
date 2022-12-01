@@ -21,8 +21,8 @@ enum states {
 }
 
 // CAMERA //
-var base_w = 416//384//416//208//1024;
-var base_h = 234//216//234//117//768;
+var base_w = 384//416//384//416//208//1024;
+var base_h = 216//234//216//234//117//768;
 var max_w = display_get_width();
 var max_h = display_get_height();
 var aspect = display_get_width() / display_get_height();

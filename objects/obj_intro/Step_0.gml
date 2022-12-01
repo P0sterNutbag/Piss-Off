@@ -25,11 +25,13 @@ if background_alpha < 1  background_alpha+=0.00025;
 for (var i=0; i<gamepad_get_device_count(); i++) {
 	if gamepad_button_check_pressed(i,gp_start) or gamepad_button_check_pressed(i,gp_face1) {
 		instance_create_layer(0,0,"control",obj_title);
+		audio_stop_all();
+		audio_play_sound(snd_intro_short,1,true);
 		instance_destroy();
 	}
 }
 
-if keyboard_check_pressed(vk_enter) {
+/*if keyboard_check_pressed(vk_enter) {
 	instance_create_layer(0,0,"control",obj_title);
 	instance_destroy()
 }

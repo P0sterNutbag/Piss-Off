@@ -1,4 +1,4 @@
-life = 1;
+life = 3;
 hp_max = 100;
 hp = hp_max;
 hp_regen_timer_max = 90;
@@ -30,7 +30,7 @@ piss_spd = 3.5;
 piss_charge_spd = 8;
 piss_yoffset = 4;
 ammo_max = 300;
-ammo_refill_timer_max = 90;
+ammo_refill_timer_max = 75;
 ammo_refill_timer = ammo_refill_timer_max
 ammo = ammo_max;
 charge_timer_max = 60;
